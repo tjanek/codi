@@ -20,4 +20,12 @@ class GitService {
                 .setMustExist(true)
         .build()
     }
+
+    def clone(String url, String path) {
+        Git.cloneRepository()
+            .setURI(url)
+            .setDirectory(new File(path))
+        .call();
+    }
+
 }
