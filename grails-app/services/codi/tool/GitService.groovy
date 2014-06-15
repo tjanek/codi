@@ -28,4 +28,10 @@ class GitService {
         .call();
     }
 
+    def commits(String root) {
+        git(root).log()
+            .all()
+        .call()
+    }
+
 }
