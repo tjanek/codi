@@ -1,6 +1,7 @@
 package codi.tool
 
 import org.eclipse.jgit.api.Git
+import org.eclipse.jgit.lib.Constants
 import org.eclipse.jgit.lib.Repository
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder
 
@@ -41,4 +42,15 @@ class GitService {
         refs
     }
 
+    def localBranches(String root) {
+        refs(root, Constants.R_HEADS)
+    }
+
+    def remoteBranches(String root) {
+        refs(root, Constants.R_REMOTES)
+    }
+
+    def allBranches(String root) {
+        localBranches(root) << remoteBranches(root)
+    }
 }
