@@ -34,4 +34,11 @@ class GitService {
         .call()
     }
 
+    def refs(String root, String...prefixes) {
+        def refs = []
+        def repository = repo(root)
+        prefixes.each { prefix -> refs << repository.refDatabase.getRefs(prefix).values() }
+        refs
+    }
+
 }
