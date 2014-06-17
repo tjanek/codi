@@ -2,6 +2,7 @@ package codi.tool
 
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.lib.Constants
+import org.eclipse.jgit.lib.Ref
 import org.eclipse.jgit.lib.Repository
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder
 
@@ -38,7 +39,7 @@ class GitService {
     def refs(String root, String...prefixes) {
         def refs = []
         def repository = repo(root)
-        prefixes.each { prefix -> refs << repository.refDatabase.getRefs(prefix).values() }
+        prefixes.each { prefix -> refs += repository.refDatabase.getRefs(prefix).values() }
         refs
     }
 
@@ -51,6 +52,22 @@ class GitService {
     }
 
     def allBranches(String root) {
-        localBranches(root) << remoteBranches(root)
+        localBranches(root) + remoteBranches(root)
+    }
+
+    def localBranchesNames(String root) {
+        localBranches(root).collect { Ref branch -> refName(branch, Constants.R_HEADS) }
+    }
+
+    def remoteBranchesNames(String root) {
+        remoteBranches(root).collect { Ref branch -> refName(branch, Constants.R_REMOTES) }
+    }
+
+    def allBranchesNames(String root) {
+        localBranchesNames(root) + remoteBranchesNames(root)
+    }
+
+    def refName(Ref ref, String prefix = '') {
+        ref.name.substring(prefix.length())
     }
 }
