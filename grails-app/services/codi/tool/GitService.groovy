@@ -30,6 +30,10 @@ class GitService {
         .call();
     }
 
+    def pull(String root) {
+        git(root).pull().call()
+    }
+
     def commits(String root) {
         git(root).log()
             .all()
