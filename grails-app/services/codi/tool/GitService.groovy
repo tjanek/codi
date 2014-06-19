@@ -1,10 +1,15 @@
 package codi.tool
 
 import org.eclipse.jgit.api.Git
+import org.eclipse.jgit.diff.DiffEntry
+import org.eclipse.jgit.diff.DiffFormatter
 import org.eclipse.jgit.lib.Constants
+import org.eclipse.jgit.lib.ObjectId
+import org.eclipse.jgit.lib.ObjectReader
 import org.eclipse.jgit.lib.Ref
 import org.eclipse.jgit.lib.Repository
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder
+import org.eclipse.jgit.treewalk.CanonicalTreeParser
 
 class GitService {
 
@@ -74,4 +79,43 @@ class GitService {
     def refName(Ref ref, String prefix = '') {
         ref.name.substring(prefix.length())
     }
+
+    def diff(String root, String commitId) {
+        def localRepo = repo(root)
+
+        def oldTreeIterator = treeIterator(localRepo, commitId)
+        def newTreeIterator = treeIterator(localRepo, "$commitId~1")
+
+        List<DiffEntry> diffs = new Git(localRepo)
+            .diff()
+            .setOldTree(oldTreeIterator)
+            .setNewTree(newTreeIterator)
+        .call();
+
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        DiffFormatter df = new DiffFormatter(out);
+        df.setRepository(localRepo);
+
+        def output = []
+        for (DiffEntry diff : diffs) {
+            df.format(diff);
+            output += out.toString("UTF-8").split('\n')
+            out.reset();
+        }
+        df.release()
+        localRepo.close();
+        return output
+    }
+
+    def treeIterator(Repository repo, String commitId) {
+        ObjectId commit = repo.resolve("$commitId^{tree}");
+        if (commit != null) {
+            CanonicalTreeParser treeIterator = new CanonicalTreeParser();
+            ObjectReader reader = repo.newObjectReader();
+            treeIterator.reset(reader, commit);
+            return treeIterator
+        }
+        null
+    }
+
 }
