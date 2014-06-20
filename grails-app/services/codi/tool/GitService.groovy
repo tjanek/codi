@@ -8,6 +8,8 @@ import org.eclipse.jgit.lib.ObjectId
 import org.eclipse.jgit.lib.ObjectReader
 import org.eclipse.jgit.lib.Ref
 import org.eclipse.jgit.lib.Repository
+import org.eclipse.jgit.revwalk.RevCommit
+import org.eclipse.jgit.revwalk.RevWalk
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder
 import org.eclipse.jgit.treewalk.CanonicalTreeParser
 
@@ -43,6 +45,28 @@ class GitService {
         git(root).log()
             .all()
         .call()
+    }
+
+    def commitsInBranch(String root, String branch) {
+        def commitsInBranch = []
+        def repo = repo(root)
+        def revWalk = new RevWalk(repo)
+        try {
+            git(repo).log().call().each { RevCommit commit ->
+                def targetCommit = revWalk.parseCommit(repo.resolve(
+                        commit.getName()));
+                repo.allRefs.entrySet().each { ref ->
+                    def branchNameMatches = (Constants.R_HEADS + branch).equals(ref.value.name)
+                    def commitIsInBranch = revWalk.isMergedInto(targetCommit, revWalk.parseCommit(ref.value.objectId))
+                    if (branchNameMatches && commitIsInBranch) {
+                        commitsInBranch += commit
+                    }
+                }
+            }
+        } finally {
+            revWalk.release()
+        }
+        commitsInBranch
     }
 
     def refs(String root, String...prefixes) {
