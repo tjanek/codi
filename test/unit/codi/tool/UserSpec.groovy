@@ -70,6 +70,5 @@ class UserSpec extends Specification {
 
         then: 'validation should pass'
         user.validate(['name'])
-
     }
 }
