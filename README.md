@@ -1,1 +1,1 @@
-#### Simple code review tool written in grails
+#### Simple code review application written in Grails
