@@ -28,5 +28,4 @@ class UserSpec extends Specification {
         'name'     | null            | false
         'name'     | 'Some user'     | true
     }
-
 }
