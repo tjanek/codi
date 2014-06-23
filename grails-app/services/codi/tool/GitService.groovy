@@ -15,6 +15,8 @@ import org.eclipse.jgit.treewalk.CanonicalTreeParser
 
 class GitService {
 
+    static transactional = false
+
     def git(String root) {
         new Git(repo(root))
     }
