@@ -11,6 +11,8 @@ class Repository {
     String path
     RepositoryStatus status
 
+    static hasMany = [branches: Branch]
+
     static constraints = {
         name blank: false, unique: true
         url blank: false, unique: true
