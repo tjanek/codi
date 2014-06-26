@@ -17,11 +17,11 @@ class UserSpec extends Specification {
 
         where:
         field      | value           | validate
-        'email'    | ''              | false
+        'email'    | ' '             | false
         'email'    | null            | false
         'email'    | 'test'          | false
         'email'    | 'test@user.com' | true
-        'password' | ''              | false
+        'password' | ' '             | false
         'password' | null            | false
         'password' | 'pass'          | false
         'password' | 'password'      | true

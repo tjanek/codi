@@ -17,10 +17,10 @@ class BranchSpec extends Specification {
 
         where:
         field      | value           | validate
-        'name'     | ''              | false
+        'name'     | ' '             | false
         'name'     | null            | false
         'name'     | 'master'        | true
-        'prefix'   | ''              | false
+        'prefix'   | ' '             | false
         'prefix'   | null            | false
         'prefix'   | 'ref/heads/'    | true
     }
