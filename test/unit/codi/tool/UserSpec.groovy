@@ -7,7 +7,7 @@ import spock.lang.Unroll
 @TestFor(User)
 class UserSpec extends Specification {
 
-    @Unroll('User #field with value #value should get be validated #validate')
+    @Unroll("User field '#field' with value '#value' should get be validated #validate")
     def 'User should be validated'() {
         when:
         def user = new User("$field": value)

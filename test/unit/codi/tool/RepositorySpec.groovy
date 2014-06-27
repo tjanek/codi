@@ -9,7 +9,7 @@ import static codi.tool.Repository.RepositoryStatus.sync
 @TestFor(Repository)
 class RepositorySpec extends Specification {
 
-    @Unroll('Repository #field with value #value should get be validated #validate')
+    @Unroll("Repository field '#field' with value '#value' should get be validated #validate")
     def "Repository should be validated"() {
         when:
         def repository = new Repository("$field": value)
