@@ -5,6 +5,7 @@ class Commit {
     String identifier
     String message
     Date committedAt
+    boolean approved
 
     static belongsTo = [branch: Branch]
 
