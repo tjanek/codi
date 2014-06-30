@@ -3,7 +3,7 @@ package codi.tool
 class Repository {
 
     enum RepositoryStatus {
-        notSync, inSync, sync
+        notSync, failed, inSync, sync
     }
 
     String name
