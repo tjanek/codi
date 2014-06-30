@@ -114,4 +114,7 @@ log4j.main = {
            'org.springframework',
            'org.hibernate',
            'net.sf.ehcache.hibernate'
+           'grails.app.jobs'
+
+    debug 'grails.app.jobs'
 }
