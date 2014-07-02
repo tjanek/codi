@@ -27,8 +27,8 @@ class GitService {
 
     def repo(String root) {
         new FileRepositoryBuilder()
-                .setWorkTree(new File(root))
-                .setMustExist(true)
+            .setWorkTree(new File(root))
+            .setMustExist(true)
         .build()
     }
 
@@ -36,7 +36,7 @@ class GitService {
         Git.cloneRepository()
             .setURI(url)
             .setDirectory(new File(path))
-        .call();
+        .call()
     }
 
     def pull(String root) {
@@ -44,9 +44,7 @@ class GitService {
     }
 
     def commits(String root) {
-        git(root).log()
-            .all()
-        .call()
+        git(root).log().all().call()
     }
 
     def commitsInBranch(String root, String branch) {
@@ -55,8 +53,7 @@ class GitService {
         def revWalk = new RevWalk(repo)
         try {
             git(repo).log().call().each { RevCommit commit ->
-                def targetCommit = revWalk.parseCommit(repo.resolve(
-                        commit.getName()));
+                def targetCommit = revWalk.parseCommit(repo.resolve(commit.getName()))
                 repo.allRefs.entrySet().each { ref ->
                     def branchNameMatches = (Constants.R_HEADS + branch).equals(ref.value.name)
                     def commitIsInBranch = revWalk.isMergedInto(targetCommit, revWalk.parseCommit(ref.value.objectId))
@@ -116,29 +113,29 @@ class GitService {
             .diff()
             .setOldTree(oldTreeIterator)
             .setNewTree(newTreeIterator)
-        .call();
+        .call()
 
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        ByteArrayOutputStream out = new ByteArrayOutputStream()
         DiffFormatter df = new DiffFormatter(out);
-        df.setRepository(localRepo);
+        df.repository = localRepo
 
         def output = []
         for (DiffEntry diff : diffs) {
-            df.format(diff);
+            df.format(diff)
             output += out.toString("UTF-8").split('\n')
-            out.reset();
+            out.reset()
         }
         df.release()
-        localRepo.close();
-        return output
+        localRepo.close()
+        output
     }
 
     def treeIterator(Repository repo, String commitId) {
-        ObjectId commit = repo.resolve("$commitId^{tree}");
+        ObjectId commit = repo.resolve("$commitId^{tree}")
         if (commit != null) {
-            CanonicalTreeParser treeIterator = new CanonicalTreeParser();
-            ObjectReader reader = repo.newObjectReader();
-            treeIterator.reset(reader, commit);
+            CanonicalTreeParser treeIterator = new CanonicalTreeParser()
+            ObjectReader reader = repo.newObjectReader()
+            treeIterator.reset(reader, commit)
             return treeIterator
         }
         null
