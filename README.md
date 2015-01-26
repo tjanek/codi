@@ -6,9 +6,9 @@
 
 #### v.0.1 ####
 > * Git repository for support branches, commits, diffs, etc.
+> * Integrate with MongoDB
 > * Model
 > * Job for synchronizing git repositories
-> * Integrate with template engine (or AngularJS)
 
 #### v.0.2 ####
 > * REST Controllers for git repositories
@@ -16,19 +16,20 @@
 > * Full integration tests for Git repositories
 
 #### v.0.3 ####
-> * Integrate with MongoDB
 > * Register users, teams, etc.
 > * Login/logout users, teams, etc.
 > * Emails
-> * Sending welcome messages
 
 #### v.0.4 ####
-> * UI
-> * Integration with Jabber/XMPP
+> * Integrate with AngularJS
+> * UI for already existing staff
 
 #### v.0.5 ####
+> * Integration with Jabber/XMPP
+
+#### v.0.6 ####
 > * Integration with Coveralls or other code coverage tool
 > * Integration with CodeNarc/CheckStyle/PMD before commit
 
-#### v.0.6 ####
+#### v.0.7 ####
 > * Gamification
